@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace api.Models
@@ -13,7 +15,7 @@ namespace api.Models
 
         public string Latitude { get; set; }
 
-        public TimeZone UTC { get; set; }
+        public string UTC { get; set; }
 
         public string Domain { get; set; }
 

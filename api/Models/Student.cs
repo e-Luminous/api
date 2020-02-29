@@ -3,18 +3,16 @@ using System.ComponentModel.DataAnnotations;
 
 namespace api.Models
 {
-    public class Instructor
+    public class Student
     {
         [Key]
-        public int InstructorId { get; set; }
+        public int StudentId { get; set; }
 
-        public string InstructorName { get; set; }
+        public string StudentName { get; set; }
 
-        public string EmployeeId { get; set; }
+        public string InstitutionId { get; set; }
 
         public string Shift { get; set; }
-
-        public string Bio { get; set; }
 
         public string ProfilePictureUrl { get; set; }
 
@@ -22,6 +20,8 @@ namespace api.Models
 
         public InstLevelGroup ILG { get; set; }
         
-        public List<Classroom> Classes { get; set; }
+        public List<StudentEnrollment> Enr { get; set; }
+
+        public List<Submission> Subs { get; set; }
     }
 }
