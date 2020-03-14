@@ -20,7 +20,7 @@ namespace api.Models
 
         public string CoverImageUrl { get; set; }
 
-        public InstLevelGroup ILG { get; set; }
+        public InstLevelGroup InstLevelGroup { get; set; }
         
         public List<Classroom> Classes { get; set; }
     }

@@ -16,7 +16,7 @@ namespace api.Models
 
         public Group Group { get; set; }
 
-        public ICollection<InstLevelGroup> ILG { get; set; }
+        public ICollection<InstLevelGroup> InstLevelGroup { get; set; }
 
         public ICollection<Experiment> Exps { get; set; }
     }

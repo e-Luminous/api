@@ -23,6 +23,6 @@ namespace api.Models
 
         public ICollection<Subscription> Subscribed { get; set; }
         
-        public ICollection<InstLevelGroup> ILG { get; set; }
+        public ICollection<InstLevelGroup> InstLevelGroup { get; set; }
     }
 }

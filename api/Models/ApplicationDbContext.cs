@@ -112,7 +112,7 @@ namespace api.Models
                 .HasForeignKey(se => se.StudentId);
         
 
-        // Defining the foreign keys in associative @ExpClass model
+            // Defining the foreign keys in associative @ExpClass model
             builder.Entity<ExpClass>().HasKey(EC => new
             {
                 EC.ExperimentId,
@@ -130,6 +130,28 @@ namespace api.Models
                 .HasOne(ec => ec.Experiment)
                 .WithMany(ec => ec.ExpClass)
                 .HasForeignKey(ec => ec.ExperimentId);
+
+
+            // Defining the foreign keys in associative @InstLevelGroup model
+            builder.Entity<InstLevelGroup>().HasKey(ILG => new
+            {
+                ILG.InstitutionId,
+                ILG.LevelGroup.LevelId,
+                ILG.LevelGroup.GroupId
+            });
+
+            // Many-to-one relationship between @InstLevelGroup and @Institution
+            builder.Entity<InstLevelGroup>()
+                .HasOne(Ilg => Ilg.Institution)
+                .WithMany(Ilg => Ilg.InstLevelGroup)
+                .HasForeignKey(Ilg => Ilg.InstitutionId);
+
+            // Many-to-one relationship between @InstLevelGroup and @LevelGroup
+            builder.Entity<InstLevelGroup>()
+                .HasOne(Ilg => Ilg.LevelGroup)
+                .WithMany(Ilg => Ilg.InstLevelGroup)
+                .HasForeignKey(Ilg => Ilg.LevelGroup.LevelId)
+                .HasForeignKey(Ilg => Ilg.LevelGroup.GroupId);
 
         }
     }
