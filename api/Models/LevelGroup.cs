@@ -5,7 +5,6 @@ namespace api.Models
 {
     public class LevelGroup
     {
-        [Key]
         public string LevelId { get; set; }
 
         public string GroupId { get; set; }
@@ -16,7 +15,7 @@ namespace api.Models
 
         public Group Group { get; set; }
 
-        public ICollection<InstLevelGroup> InstLevelGroup { get; set; }
+        public ICollection<InstLevelGroup> InstLevelGroups { get; set; }
 
         public ICollection<Experiment> Exps { get; set; }
     }

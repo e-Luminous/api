@@ -6,7 +6,7 @@ namespace api.Models
     public class Group
     {
         [Key]
-        public int GroupId { get; set; }
+        public string GroupId { get; set; }
 
         public string GroupName { get; set; }
         

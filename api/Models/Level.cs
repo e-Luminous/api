@@ -6,7 +6,7 @@ namespace api.Models
     public class Level
     {
         [Key]
-        public int LevelId { get; set; }
+        public string LevelId { get; set; }
 
         public string LevelName { get; set; }
 

@@ -1,8 +1,9 @@
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace api.Models
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) {}
 
@@ -32,8 +33,6 @@ namespace api.Models
 
         public DbSet<Region> Regions { get; set; }
 
-        public DbSet<Role> Roles { get; set; }
-
         public DbSet<Student> Students { get; set; }
 
         public DbSet<StudentEnrollment> StudentEnrollments { get; set; }
@@ -44,19 +43,26 @@ namespace api.Models
 
         public DbSet<Transaction> Transactions { get; set; }
 
-        public DbSet<User> Users { get; set; }
-
-        public DbSet<UserRole> UserRoles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
+            builder.Entity<Subscription>()
+                .HasOne(sub => sub.Transaction)
+                .WithOne(tra => tra.Subscription)
+                .HasForeignKey<Transaction>(s => s.TransactionId);
+            
+            builder.Entity<Transaction>()
+                .HasOne(sub => sub.Subscription)
+                .WithOne(tra => tra.Transaction)
+                .HasForeignKey<Subscription>(s => s.SubscriptionId);
+
             // Defining the foreign keys in associative @LevelGroup model
-            builder.Entity<LevelGroup>().HasKey(LG => new
+            builder.Entity<LevelGroup>().HasKey(lg => new
             {
-                LG.LevelId,
-                LG.GroupId
+                lg.LevelId,
+                lg.GroupId
             });
             
             // Many-to-one relationship between @LevelGroup and @Level
@@ -72,31 +78,31 @@ namespace api.Models
                 .HasForeignKey(levelGroup => levelGroup.GroupId);
 
             
-            // Defining the foreign keys in associative @UserRole model
-            builder.Entity<UserRole>().HasKey(UR => new
-            {
-                UR.RoleId,
-                UR.Id
-            });
+            // // Defining the foreign keys in associative @UserRole model
+            // builder.Entity<UserRole>().HasKey(UR => new
+            // {
+            //     UR.RoleId,
+            //     UR.Id
+            // });
 
-            // Many-to-one relationship between @UserRole and @User
-            builder.Entity<UserRole>()
-                .HasOne(ur => ur.User)
-                .WithMany(ur => ur.Roles)
-                .HasForeignKey(ur => ur.RoleId);
+            // // Many-to-one relationship between @UserRole and @User
+            // builder.Entity<UserRole>()
+            //     .HasOne(ur => ur.User)
+            //     .WithMany(ur => ur.Roles)
+            //     .HasForeignKey(ur => ur.RoleId);
 
-            // Many-to-one relationship between @UserRole and @Role
-            builder.Entity<UserRole>()
-                .HasOne(ur => ur.Role)
-                .WithMany(ur => ur.Roles)
-                .HasForeignKey(ur => ur.Id);
+            // // Many-to-one relationship between @UserRole and @Role
+            // builder.Entity<UserRole>()
+            //     .HasOne(ur => ur.Role)
+            //     .WithMany(ur => ur.Roles)
+            //     .HasForeignKey(ur => ur.Id);
 
         
             // Defining the foreign keys in associative @StudentEnrollment model
-            builder.Entity<StudentEnrollment>().HasKey(SE => new
+            builder.Entity<StudentEnrollment>().HasKey(se => new
             {
-                SE.StudentId,
-                SE.ClassroomId
+                se.StudentId,
+                se.ClassroomId
             });
 
             // Many-to-one relationship between @StudentEnrollment and @Classroom
@@ -113,10 +119,10 @@ namespace api.Models
         
 
             // Defining the foreign keys in associative @ExpClass model
-            builder.Entity<ExpClass>().HasKey(EC => new
+            builder.Entity<ExpClass>().HasKey(ec => new
             {
-                EC.ExperimentId,
-                EC.ClassroomId
+                ec.ExperimentId,
+                ec.ClassroomId
             });
 
             // Many-to-one relationship between @ExpClass and @Classroom
@@ -133,26 +139,28 @@ namespace api.Models
 
 
             // Defining the foreign keys in associative @InstLevelGroup model
-            builder.Entity<InstLevelGroup>().HasKey(ILG => new
+            builder.Entity<InstLevelGroup>().HasKey(ilg => new
             {
-                ILG.InstitutionId,
-                ILG.LevelGroup.LevelId,
-                ILG.LevelGroup.GroupId
+                ilg.InstitutionId,
+                ilg.LevelId,
+                ilg.GroupId
             });
 
             // Many-to-one relationship between @InstLevelGroup and @Institution
             builder.Entity<InstLevelGroup>()
-                .HasOne(Ilg => Ilg.Institution)
-                .WithMany(Ilg => Ilg.InstLevelGroup)
-                .HasForeignKey(Ilg => Ilg.InstitutionId);
+                .HasOne(ilg => ilg.Institution)
+                .WithMany(ilg => ilg.InstLevelGroup)
+                .HasForeignKey(ilg => ilg.InstitutionId);
 
             // Many-to-one relationship between @InstLevelGroup and @LevelGroup
             builder.Entity<InstLevelGroup>()
-                .HasOne(Ilg => Ilg.LevelGroup)
-                .WithMany(Ilg => Ilg.InstLevelGroup)
-                .HasForeignKey(Ilg => Ilg.LevelGroup.LevelId)
-                .HasForeignKey(Ilg => Ilg.LevelGroup.GroupId);
-
+                .HasOne(ilg => ilg.LevelGroup)
+                .WithMany(ilg => ilg.InstLevelGroups)
+                .HasForeignKey(ilg => new
+                {
+                    ilg.LevelId,
+                    ilg.GroupId
+                });
         }
     }
 }

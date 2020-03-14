@@ -7,7 +7,7 @@ namespace api.Models
     public class Institution
     {
         [Key]
-        public int InstitutionId { get; set; }
+        public string InstitutionId { get; set; }
 
         public string InstitutionName { get; set; }
 

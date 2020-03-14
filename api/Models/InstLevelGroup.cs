@@ -10,6 +10,10 @@ namespace api.Models
 
         public string InstitutionId { get; set; }
 
+        public string LevelId { get; set; }
+        
+        public string GroupId { get; set; }
+
         public ICollection<PreAuthList> PreAuthList { get; set; }
 
         public ICollection<Instructor> Instructors { get; set; }
