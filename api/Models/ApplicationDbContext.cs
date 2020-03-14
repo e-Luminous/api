@@ -53,10 +53,10 @@ namespace api.Models
             base.OnModelCreating(builder);
 
             // Defining the foreign keys in associative @LevelGroup model
-            builder.Entity<LevelGroup>().HasKey(lg => new
+            builder.Entity<LevelGroup>().HasKey(LG => new
             {
-                lg.LevelId,
-                lg.GroupId
+                LG.LevelId,
+                LG.GroupId
             });
             
             // Many-to-one relationship between @LevelGroup and @Level
@@ -73,10 +73,10 @@ namespace api.Models
 
             
             // Defining the foreign keys in associative @UserRole model
-            builder.Entity<UserRole>().HasKey(ur => new
+            builder.Entity<UserRole>().HasKey(UR => new
             {
-                ur.RoleId,
-                ur.Id
+                UR.RoleId,
+                UR.Id
             });
 
             // Many-to-one relationship between @UserRole and @User
@@ -90,6 +90,26 @@ namespace api.Models
                 .HasOne(ur => ur.Role)
                 .WithMany(ur => ur.Roles)
                 .HasForeignKey(ur => ur.Id);
+
+        
+            // Defining the foreign keys in associative @StudentEnrollment model
+            builder.Entity<StudentEnrollment>().HasKey(SE => new
+            {
+                SE.StudentId,
+                SE.ClassroomId
+            });
+
+            // Many-to-one relationship between @StudentEnrollment and @Classroom
+            builder.Entity<StudentEnrollment>()
+                .HasOne(se => se.Classroom)
+                .WithMany(se => se.StudentEnr)
+                .HasForeignKey(se => se.StudentId);
+
+            // Many-to-one relationship between @StudentEnrollment and @Student
+            builder.Entity<StudentEnrollment>()
+                .HasOne(se => se.Student)
+                .WithMany(se => se.StudentEnr)
+                .HasForeignKey(se => se.StudentId);
 
         }
     }

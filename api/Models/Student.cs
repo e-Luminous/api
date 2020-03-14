@@ -6,7 +6,7 @@ namespace api.Models
     public class Student
     {
         [Key]
-        public int StudentId { get; set; }
+        public string StudentId { get; set; }
 
         public string StudentName { get; set; }
 
@@ -20,7 +20,7 @@ namespace api.Models
 
         public InstLevelGroup ILG { get; set; }
         
-        public List<StudentEnrollment> Enr { get; set; }
+        public List<StudentEnrollment> StudentEnr { get; set; }
 
         public List<Submission> Subs { get; set; }
     }

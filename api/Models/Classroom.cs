@@ -6,7 +6,7 @@ namespace api.Models
     public class Classroom
     {
         [Key]
-        public int ClassroomId { get; set; }
+        public string ClassroomId { get; set; }
 
         public string ClassroomTitle { get; set; }
 
@@ -20,7 +20,7 @@ namespace api.Models
 
         public Instructor Instructor { get; set; }
 
-        public List<StudentEnrollment> Enr { get; set; }
+        public List<StudentEnrollment> StudentEnr { get; set; }
         
         public List<ExpClass> EC { get; set; }
     }
