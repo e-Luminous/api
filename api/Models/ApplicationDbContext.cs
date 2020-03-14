@@ -48,5 +48,49 @@ namespace api.Models
 
         public DbSet<UserRole> UserRoles { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            // Defining the foreign keys in associative @LevelGroup model
+            builder.Entity<LevelGroup>().HasKey(lg => new
+            {
+                lg.LevelId,
+                lg.GroupId
+            });
+            
+            // Many-to-one relationship between @LevelGroup and @Level
+            builder.Entity<LevelGroup>()
+                .HasOne(levelGroup => levelGroup.Level)
+                .WithMany(level => level.LevelGroups)
+                .HasForeignKey(levelGroup => levelGroup.LevelId);
+            
+            // Many-to-one relationship between @LevelGroup and @Group
+            builder.Entity<LevelGroup>()
+                .HasOne(levelGroup => levelGroup.Group)
+                .WithMany(level => level.LevelGroups)
+                .HasForeignKey(levelGroup => levelGroup.GroupId);
+
+            
+            // Defining the foreign keys in associative @UserRole model
+            builder.Entity<UserRole>().HasKey(ur => new
+            {
+                ur.RoleId,
+                ur.Id
+            });
+
+            // Many-to-one relationship between @UserRole and @User
+            builder.Entity<UserRole>()
+                .HasOne(ur => ur.User)
+                .WithMany(ur => ur.Roles)
+                .HasForeignKey(ur => ur.RoleId);
+
+            // Many-to-one relationship between @UserRole and @Role
+            builder.Entity<UserRole>()
+                .HasOne(ur => ur.Role)
+                .WithMany(ur => ur.Roles)
+                .HasForeignKey(ur => ur.Id);
+
+        }
     }
 }
