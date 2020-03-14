@@ -14,8 +14,8 @@ namespace api.Models
 
         public Region Region { get; set; }
 
-        public List<StudentEnrollment> Enr { get; set; }
+        public List<StudentEnrollment> StudentEnr { get; set; }
 
-        public List<ExpClass> EC { get; set; }
+        public List<ExpClass> ExpClass { get; set; }
     }
 }

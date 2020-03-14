@@ -110,6 +110,26 @@ namespace api.Models
                 .HasOne(se => se.Student)
                 .WithMany(se => se.StudentEnr)
                 .HasForeignKey(se => se.StudentId);
+        
+
+        // Defining the foreign keys in associative @ExpClass model
+            builder.Entity<ExpClass>().HasKey(EC => new
+            {
+                EC.ExperimentId,
+                EC.ClassroomId
+            });
+
+            // Many-to-one relationship between @ExpClass and @Classroom
+            builder.Entity<ExpClass>()
+                .HasOne(ec => ec.Classroom)
+                .WithMany(ec => ec.ExpClass)
+                .HasForeignKey(ec => ec.ClassroomId);
+
+            // Many-to-one relationship between @ExpClass and @Experiment
+            builder.Entity<ExpClass>()
+                .HasOne(ec => ec.Experiment)
+                .WithMany(ec => ec.ExpClass)
+                .HasForeignKey(ec => ec.ExperimentId);
 
         }
     }
