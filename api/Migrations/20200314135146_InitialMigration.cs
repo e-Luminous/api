@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace api.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -75,7 +75,7 @@ namespace api.Migrations
                 columns: table => new
                 {
                     MethodId = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     MethodName = table.Column<string>(nullable: true),
                     EndPoint = table.Column<string>(nullable: true),
                     OTPUrl = table.Column<string>(nullable: true),
@@ -91,7 +91,7 @@ namespace api.Migrations
                 columns: table => new
                 {
                     RegionId = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     RegionName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -104,7 +104,7 @@ namespace api.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     RoleId = table.Column<string>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
@@ -125,7 +125,7 @@ namespace api.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<string>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
@@ -256,7 +256,7 @@ namespace api.Migrations
                 columns: table => new
                 {
                     CountryId = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     CountryName = table.Column<string>(nullable: true),
                     RegionId = table.Column<int>(nullable: true)
                 },
@@ -376,7 +376,7 @@ namespace api.Migrations
                 columns: table => new
                 {
                     InstructorId = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     InstructorName = table.Column<string>(nullable: true),
                     EmployeeId = table.Column<string>(nullable: true),
                     Shift = table.Column<string>(nullable: true),
@@ -570,7 +570,8 @@ namespace api.Migrations
                 name: "RoleNameIndex",
                 table: "AspNetRoles",
                 column: "NormalizedName",
-                unique: true);
+                unique: true,
+                filter: "[NormalizedName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserClaims_UserId",
@@ -596,7 +597,8 @@ namespace api.Migrations
                 name: "UserNameIndex",
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
-                unique: true);
+                unique: true,
+                filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Classrooms_InstructorId",

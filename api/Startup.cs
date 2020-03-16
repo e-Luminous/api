@@ -34,7 +34,7 @@ namespace api
                 .AddNewtonsoftJson(opt => opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 
             services.AddDbContextPool<ApplicationDbContext>(options => 
-                options.UseSqlite(Configuration.GetConnectionString("ApplicationDbContext")));
+                options.UseSqlServer(Configuration.GetConnectionString("ApplicationDbContext")));
 
             services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
         }

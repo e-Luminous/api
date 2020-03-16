@@ -44,20 +44,11 @@ namespace api.Models
         public DbSet<Transaction> Transactions { get; set; }
 
 
+        // Override Many-to-Many Relation 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-
-            builder.Entity<Subscription>()
-                .HasOne(sub => sub.Transaction)
-                .WithOne(tra => tra.Subscription)
-                .HasForeignKey<Transaction>(s => s.TransactionId);
             
-            builder.Entity<Transaction>()
-                .HasOne(sub => sub.Subscription)
-                .WithOne(tra => tra.Transaction)
-                .HasForeignKey<Subscription>(s => s.SubscriptionId);
-
             // Defining the foreign keys in associative @LevelGroup model
             builder.Entity<LevelGroup>().HasKey(lg => new
             {
@@ -77,26 +68,7 @@ namespace api.Models
                 .WithMany(level => level.LevelGroups)
                 .HasForeignKey(levelGroup => levelGroup.GroupId);
 
-            
-            // // Defining the foreign keys in associative @UserRole model
-            // builder.Entity<UserRole>().HasKey(UR => new
-            // {
-            //     UR.RoleId,
-            //     UR.Id
-            // });
-
-            // // Many-to-one relationship between @UserRole and @User
-            // builder.Entity<UserRole>()
-            //     .HasOne(ur => ur.User)
-            //     .WithMany(ur => ur.Roles)
-            //     .HasForeignKey(ur => ur.RoleId);
-
-            // // Many-to-one relationship between @UserRole and @Role
-            // builder.Entity<UserRole>()
-            //     .HasOne(ur => ur.Role)
-            //     .WithMany(ur => ur.Roles)
-            //     .HasForeignKey(ur => ur.Id);
-
+         
         
             // Defining the foreign keys in associative @StudentEnrollment model
             builder.Entity<StudentEnrollment>().HasKey(se => new
@@ -161,6 +133,18 @@ namespace api.Models
                     ilg.LevelId,
                     ilg.GroupId
                 });
+            
+            // One-to-one relationship between @Subscription and @Transaction
+            builder.Entity<Subscription>()
+                .HasOne(sub => sub.Transaction)
+                .WithOne(tra => tra.Subscription)
+                .HasForeignKey<Transaction>(s => s.TransactionId);
+            
+            // One-to-one relationship between @Transaction and @Subscription
+            builder.Entity<Transaction>()
+                .HasOne(sub => sub.Subscription)
+                .WithOne(tra => tra.Transaction)
+                .HasForeignKey<Subscription>(s => s.SubscriptionId);
         }
     }
 }
