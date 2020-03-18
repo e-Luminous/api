@@ -4,8 +4,10 @@ using System.Net.Mail;
 using System.Threading.Tasks;
 using api.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
 
 namespace api.Controllers
 {
@@ -27,8 +29,8 @@ namespace api.Controllers
         }
 
         
-        [HttpPost]
-        public async Task<JsonResult>Register(CustomModel customUser)
+        [HttpPost("register")]
+        public async Task<IActionResult>Register(CustomModel customUser)
         {
             if (ModelState.IsValid)
             {
@@ -47,62 +49,64 @@ namespace api.Controllers
                 if (userCreationResult.Succeeded)
                 {
                     var User_Role = customUser.Role;
+                    
+
+                    //return Json(test.ToString());
+                    //return Ok(test.ToString());
+                    
                     if (User_Role == "Admin")
                     {
-                        var roleId =
-                            await _context.Database.ExecuteSqlInterpolatedAsync(
-                                $"find_UserRoleId @roleName={User_Role}");
+                        //var roleId =
+                            //await _context.Database.ExecuteSqlInterpolatedAsync(
+                               // $"EXEC find_UserRoleId @roleName={User_Role}");
+                        
                         
                         var InstitutionObj = new Institution
                         {
+                            InstitutionId = Guid.NewGuid().ToString().Replace("-", ""),
                             Users = customObj
                         };
+                       
                         //await _userManager.AddToRoleAsync(customObj, roleId);
 
-                        await _context.Database.ExecuteSqlInterpolatedAsync(
-                            $"Insert_UserRoleInfo @UserId={customObj.Id} @RoleId={roleId}");
+                        // Data Insert on UserRole Table
+                        await _context.Database.ExecuteSqlInterpolatedAsync
+                            ($"EXEC Insert_UserRoleInfo @UserId={customObj.Id}, @RoleId={"1"}");
                         
                         _context.Add(customObj);
                         _context.Add(InstitutionObj);
-                        
                         //await _signInManager(userObj, isPersistent: true);
                     }
-                    /*
                     else if (User_Role == "Instructor")
                     {
                         var InstructorObj = new Instructor
                         {
+                            InstructorId = Guid.NewGuid().ToString().Replace("-", ""),
                             Users = customObj
                         };
-                        
-                        var userRoleObj = new UserRole
-                        {
-                            Id = customObj.Id,
-                            RoleId = "2"
-                        };
+
+                        // Data Insert on UserRole Table
+                        await _context.Database.ExecuteSqlInterpolatedAsync
+                            ($"EXEC Insert_UserRoleInfo @UserId={customObj.Id}, @RoleId={"2"}");
                         
                         _context.Add(customObj);
                         _context.Add(InstructorObj);
-                        _context.Add(userRoleObj);
                     }
                     else if (User_Role == "Student")
                     {
                         var StudentObj = new Student
                         {
+                            StudentId = Guid.NewGuid().ToString().Replace("-", ""),
                             Users = customObj
                         };
                         
-                        var userRoleObj = new UserRole
-                        {
-                            Id = customObj.Id,
-                            RoleId = "3"
-                        };
+                        // Data Insert on UserRole Table
+                        await _context.Database.ExecuteSqlInterpolatedAsync
+                            ($"EXEC Insert_UserRoleInfo @UserId={customObj.Id}, @RoleId={"3"}");
                         
                         _context.Add(customObj);
                         _context.Add(StudentObj);
-                        _context.Add(userRoleObj);
                     }
-                    */
                     await _context.SaveChangesAsync();
                 }
             }
