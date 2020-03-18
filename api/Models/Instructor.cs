@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
 
 namespace api.Models
 {
@@ -20,6 +21,8 @@ namespace api.Models
 
         public string CoverImageUrl { get; set; }
 
+        public IdentityUser Users { get; set; }
+        
         public InstLevelGroup InstLevelGroup { get; set; }
         
         public List<Classroom> Classes { get; set; }

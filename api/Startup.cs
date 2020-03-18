@@ -36,7 +36,9 @@ namespace api
             services.AddDbContextPool<ApplicationDbContext>(options => 
                 options.UseSqlServer(Configuration.GetConnectionString("ApplicationDbContext")));
 
-            services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

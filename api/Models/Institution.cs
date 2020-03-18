@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
 
 namespace api.Models
 {
@@ -21,8 +22,9 @@ namespace api.Models
 
         public Country Country { get; set; }
 
-        public ICollection<Subscription> Subscribed { get; set; }
+        public IdentityUser Users { get; set; }
         
+        public ICollection<Subscription> Subscribed { get; set; }
         public ICollection<InstLevelGroup> InstLevelGroup { get; set; }
     }
 }
